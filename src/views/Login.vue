@@ -1,20 +1,34 @@
 <template>
-    <BasePage>
-        <BaseField>
-            <template #label>Имя пользователя</template>
-            <template #input>
-                <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
-            </template>
-        </BaseField>
-        <BaseField>
-            <template #label>Пароль</template>
-            <template #input>
-                <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
-            </template>
-        </BaseField>
-        <BaseButton @click="submit">Продолжить</BaseButton>
-        <router-link to="/register">Нет аккаунта? Зарегестрироваться</router-link>
-    </BasePage>
+    <section class="hero is-link is-bold is-fullheight">
+        <div class="hero-body">
+            <BasePage>
+                <div class="box">
+                    <BaseField>
+                        <template #label>Имя пользователя</template>
+                        <template #input>
+                            <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>Пароль</template>
+                        <template #input>
+                            <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>
+                            <BaseButton class="is-success" @click="submit">Продолжить</BaseButton>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>
+                            <router-link to="/register">Нет аккаунта? Зарегестрироваться</router-link>
+                        </template>
+                    </BaseField>
+                </div>
+            </BasePage>
+        </div>
+    </section>
 </template>
 
 <script>
