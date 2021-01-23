@@ -2,7 +2,7 @@
     <input
            class="input"
            v-bind="$attrs"
-           @input="$emit('input', $event.target.value)"
+           @input="$emit('update:modelValue', $event.target.value)"
     />
 </template>
 

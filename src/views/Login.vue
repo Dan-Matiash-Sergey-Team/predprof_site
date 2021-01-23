@@ -10,6 +10,7 @@
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                             </span>
+                            <p class="help is-danger" v-if="!emailValid">This email is invalid</p>
                         </template>
                     </BaseField>
                     <BaseField>
@@ -56,6 +57,14 @@
             submit: async function () {
                 //TODO login
                 await this.$router.push('/main')
+            }
+        },
+        computed:{
+            emailValid: function () {
+                // eslint-disable-next-line no-useless-escape
+                const re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+
+                return re.test(this.username) || this.username === ""
             }
         }
     }
