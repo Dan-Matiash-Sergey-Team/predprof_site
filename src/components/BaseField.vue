@@ -1,7 +1,7 @@
 <template>
     <div class="field">
         <label class="label"><slot name="label"></slot></label>
-        <div class="control"><slot name="input"></slot> </div>
+        <div class="control has-icons-left"><slot name="input"></slot> </div>
     </div>
 </template>
 

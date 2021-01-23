@@ -4,20 +4,26 @@
             <BasePage>
                 <div class="box">
                     <BaseField>
-                        <template #label>Имя пользователя</template>
+                        <template #label>Адрес электронной почты</template>
                         <template #input>
                             <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
                         </template>
                     </BaseField>
                     <BaseField>
                         <template #label>Пароль</template>
                         <template #input>
                             <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
                         </template>
                     </BaseField>
                     <BaseField>
                         <template #label>
-                            <BaseButton class="is-success" @click="submit">Продолжить</BaseButton>
+                            <BaseButton @click="submit" class="is-success">Продолжить</BaseButton>
                         </template>
                     </BaseField>
                     <BaseField>
