@@ -1,8 +1,17 @@
 import { createStore } from "vuex";
 
 export default createStore({
-  state: {},
+  state: {
+    userData: {
+      logged: false,
+      username: '',
+      password: ''
+    }
+  },
   mutations: {},
   actions: {},
-  modules: {}
+  modules: {},
+  getters: {
+    userData: state => state.userData
+  }
 });
