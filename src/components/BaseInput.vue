@@ -1,8 +1,7 @@
 <template>
     <input
-           class="input"
-           v-bind="$attrs"
-           @input="$emit('update:modelValue', $event.target.value)"
+            @input="$emit('update:modelValue', $event.target.value)"
+            class="input"
     />
 </template>
 

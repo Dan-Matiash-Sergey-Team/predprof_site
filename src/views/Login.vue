@@ -55,8 +55,20 @@
         },
         methods: {
             submit: async function () {
-                //TODO login
-                await this.$router.push('/main')
+                const resp = await fetch('http://195.133.147.101:228/token/',{
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: this.username,
+                        password: this.password
+                    }),
+                    headers: {
+                        "Content-Type": 'application/json'
+                    }
+                })
+                const a = await resp.json()
+                this.$store.commit('newAccess',{access: a.access, refresh: a.refresh})
+                this.$store.commit('newRefresh',{access: a.access, refresh: a.refresh})
+                await this.$router.push('/')
             }
         },
         computed:{
