@@ -14,7 +14,7 @@
             if (!this.$store.getters.logged) {
                 await this.$router.push('/login')
             } else {
-                const resp = await fetch('http://195.133.147.101:228/records/', {
+                const resp = await fetch('http://127.0.0.1:8000/records/', {
                     method: "GET",
                     headers: {
                         "Content-Type": 'application/json',
@@ -22,7 +22,7 @@
                     }
                 })
                 if (resp.status === 401) {
-                    const resp = await fetch('http://195.133.147.101:228/token/refresh', {
+                    const resp = await fetch('http://127.0.0.1:8000/token/refresh', {
                         method: "POST",
                         body: JSON.stringify({
                             refresh: this.$store.getters.refresh

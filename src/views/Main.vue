@@ -1,7 +1,8 @@
 <template>
     <div>
         <BaseInput type="number" v-model="weight" :value="weight"/>
-        <BaseButton @click="saveWeight">Сохранить</BaseButton>
+        <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
+        <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
         <br>
         <div v-for="(record,i) in allRecords" :key="i">
             <p>{{record.date}}: {{record.value}}</p>
@@ -24,7 +25,7 @@
         },
         methods: {
             saveWeight: async function () {
-                const resp = await fetch('http://195.133.147.101:228/records/', {
+                const resp = await fetch('http://127.0.0.1:8000/records/', {
                     method: "POST",
                     body: JSON.stringify({
                         record: {
@@ -37,7 +38,7 @@
                     }
                 })
                 if (resp.status === 403) {
-                    const resp = await fetch('http://195.133.147.101:228/token/refresh', {
+                    const resp = await fetch('http://127.0.0.1:8000/token/refresh', {
                         method: "POST",
                         body: JSON.stringify({
                             refresh: this.$store.getters.refresh
@@ -55,10 +56,48 @@
                 } else if (resp.status === 200) {
                     this.$store.commit('addRecord', {value: this.weight, date: String(new Date())})
                 }
+            },
+            editWeight: async function(){
+                const resp = await fetch('http://127.0.0.1:8000/records/', {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        record: {
+                            value: this.weight
+                        }
+                    }),
+                    headers: {
+                        "Content-Type": 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.access
+                    }
+                })
+                if (resp.status === 403) {
+                    const resp = await fetch('http://127.0.0.1:8000/token/refresh', {
+                        method: "POST",
+                        body: JSON.stringify({
+                            refresh: this.$store.getters.refresh
+                        }),
+                        headers: {
+                            "Content-Type": 'application/json'
+                        }
+                    })
+                    if (resp.status === 403) {
+                        await this.$router.push('/login')
+                    }
+                    const a = await resp.json()
+                    this.$store.commit('newAccess', {access: a.access})
+                    this.saveWeight()
+                } else if (resp.status === 200) {
+                    this.$store.commit('editRecord', {value: this.weight, date: String(new Date())})
+                }
             }
         },
+        computed: {
+          todayRecord: function () {
+                return new Date(this.allRecords[this.allRecords.length-1].date).getDate() === new Date().getDate()
+          }
+        },
         async mounted() {
-            if (new Date(this.allRecords[this.allRecords.length-1].date).getDate() === new Date().getDate()) {
+            if (this.todayRecord) {
                 this.weight = this.allRecords[this.allRecords.length-1].value
             }
         }

@@ -19,6 +19,9 @@ export default createStore({
         addRecord(state, payload){
             state.records.push(payload)
         },
+        editRecord(state, payload){
+          state.records[state.records.length-1] = payload
+        },
         setRecords(state, payload){
             state.records = payload
         }
