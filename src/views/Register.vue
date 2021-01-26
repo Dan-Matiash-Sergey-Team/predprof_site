@@ -1,38 +1,40 @@
 <template>
-  <section class="hero is-link is-bold is-fullheight">
-    <div class="hero-body">
-      <BasePage>
-        <div class="box">
-          <BaseField>
-            <template #label>Адрес электронной почты</template>
-            <template #input>
-              <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
-            </template>
-          </BaseField>
-          <BaseField>
-            <template #label>Пароль</template>
-            <template #input>
-              <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
-            </template>
-          </BaseField>
-          <BaseField>
-            <template #label>Пароль повторно</template>
-            <template #input><BaseInput placeholder="password" type="password" v-model="iter_password"></BaseInput>
-              <p class="help is-danger" v-if="Check_password">
-                Пароли не совпадают
-              </p>
-            </template>
-          </BaseField>
-          <BaseField>
-            <template #label>
-              <BaseButton class="is-success" @click="submit">Создать аккаунт</BaseButton>
-            </template>
-          </BaseField>
+    <section class="hero is-link is-bold is-fullheight">
+        <div class="hero-body">
+            <BasePage>
+                <div class="box">
+                    <BaseField>
+                        <template #label>Адрес электронной почты</template>
+                        <template #input>
+                            <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>Пароль</template>
+                        <template #input>
+                            <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>Пароль повторно</template>
+                        <template #input>
+                            <BaseInput placeholder="password" type="password" v-model="iter_password"></BaseInput>
+                            <p class="help is-danger" v-if="Check_password">
+                                Пароли не совпадают
+                            </p>
+                        </template>
+                    </BaseField>
+                    <BaseField>
+                        <template #label>
+                            <p class="help is-danger" v-if="error">{{error}}</p>
+                            <BaseButton @click="submit" class="is-success">Создать аккаунт</BaseButton>
+                        </template>
+                    </BaseField>
+                </div>
+            </BasePage>
         </div>
-      </BasePage>
-    </div>
-  </section>
-<div></div>
+    </section>
+    <div></div>
 </template>
 
 <script>
@@ -40,27 +42,50 @@
     import BaseField from "@/components/BaseField";
     import BaseInput from "@/components/BaseInput";
     import BaseButton from "@/components/BaseButton";
+
     export default {
         name: "Register",
-      components: {BaseButton, BaseInput, BaseField, BasePage},
-      data(){
-          return{
-            username: '',
-            password: '',
-            iter_password: ''
-          }
-      },
-      methods:{
-
-      },
-      computed:{
-          Check_password: function (){
-            if(this.password != this.iter_password){
-              return true;
+        components: {BaseButton, BaseInput, BaseField, BasePage},
+        data() {
+            return {
+                username: '',
+                password: '',
+                iter_password: '',
+                error: false
             }
-            return false;
-    }
-      }
+        },
+        methods: {
+            submit: async function () {
+                const resp = await fetch('http://127.0.0.1:8000/register/', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        login: this.username,
+                        password: this.password
+                    }),
+                    headers: {
+                        "Content-Type": 'application/json',
+                    }
+                })
+                if (resp.status === 200) {
+                    this.error = false
+                    await this.$router.push('/login')
+                } else if (resp.status === 400) {
+                    this.error = "Ошибка в данных"
+                }
+                else if(resp.status === 409){
+                  this.error = "Этот email уже занят"
+                }
+                else if(resp.status === 411){
+                  this.error = await resp.json()
+                  console.log(this.error)
+                }
+            },
+        },
+        computed: {
+            Check_password: function () {
+                return this.password !== this.iter_password
+            }
+        }
     }
 </script>
 

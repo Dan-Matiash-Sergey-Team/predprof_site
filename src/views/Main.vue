@@ -93,6 +93,7 @@
         },
         computed: {
           todayRecord: function () {
+              if(this.allRecords.length === 0) return false
                 return new Date(this.allRecords[this.allRecords.length-1].date).getDate() === new Date().getDate()
           }
         },
