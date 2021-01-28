@@ -1,12 +1,17 @@
 <template>
     <div>
-        <BaseInput type="number" v-model="weight" :value="weight"/>
+        <BaseInput :value="weight" type="number" v-model="weight"/>
         <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
         <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
         <br>
-        <div v-for="(record,i) in allRecords" :key="i">
+        <div :key="i" v-for="(record,i) in allRecords">
             <p>{{record.date}}: {{record.value}}</p>
         </div>
+        <br>
+        <GChart
+            type="LineChart"
+            :data="chartData"
+            :options="{title: 'Вес'}"/>
     </div>
 </template>
 
@@ -57,7 +62,7 @@
                     this.$store.commit('addRecord', {value: this.weight, date: String(new Date())})
                 }
             },
-            editWeight: async function(){
+            editWeight: async function () {
                 const resp = await fetch('http://127.0.0.1:8000/records/', {
                     method: "PUT",
                     body: JSON.stringify({
@@ -92,14 +97,21 @@
             }
         },
         computed: {
-          todayRecord: function () {
-              if(this.allRecords.length === 0) return false
-                return new Date(this.allRecords[this.allRecords.length-1].date).getDate() === new Date().getDate()
-          }
+            todayRecord: function () {
+                if (this.allRecords.length === 0) return false
+                return new Date(this.allRecords[this.allRecords.length - 1].date).getDate() === new Date().getDate()
+            },
+            chartData: function () {
+                let a = [['Date', 'Weight']]
+                this.allRecords.forEach((el)=>{
+                    a.push([el.date, el.value])
+                })
+                return a
+            }
         },
         async mounted() {
             if (this.todayRecord) {
-                this.weight = this.allRecords[this.allRecords.length-1].value
+                this.weight = this.allRecords[this.allRecords.length - 1].value
             }
         }
     }

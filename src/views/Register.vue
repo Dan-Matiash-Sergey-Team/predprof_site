@@ -7,18 +7,27 @@
                         <template #label>Адрес электронной почты</template>
                         <template #input>
                             <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
                         </template>
                     </BaseField>
                     <BaseField>
                         <template #label>Пароль</template>
                         <template #input>
                             <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
                         </template>
                     </BaseField>
                     <BaseField>
                         <template #label>Пароль повторно</template>
                         <template #input>
                             <BaseInput placeholder="password" type="password" v-model="iter_password"></BaseInput>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
                             <p class="help is-danger" v-if="Check_password">
                                 Пароли не совпадают
                             </p>
