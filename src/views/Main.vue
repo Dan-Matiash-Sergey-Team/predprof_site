@@ -29,7 +29,7 @@
         },
         methods: {
             saveWeight: async function () {
-                const resp = await fetch('http://127.0.0.1:8000/records/', {
+                const resp = await fetch('http://195.133.147.101:228/records/', {
                     method: "POST",
                     body: JSON.stringify({
                         record: {
@@ -42,7 +42,7 @@
                     }
                 })
                 if (resp.status === 403) {
-                    const resp = await fetch('http://127.0.0.1:8000/token/refresh', {
+                    const resp = await fetch('http://195.133.147.101:228/token/refresh', {
                         method: "POST",
                         body: JSON.stringify({
                             refresh: this.$store.getters.refresh
@@ -51,7 +51,7 @@
                             "Content-Type": 'application/json'
                         }
                     })
-                    if (resp.status === 403) {
+                    if (resp.status === 403 || resp.status === 401 || resp.status === 400) {
                         await this.$router.push('/login')
                     }
                     const a = await resp.json()
@@ -62,7 +62,7 @@
                 }
             },
             editWeight: async function () {
-                const resp = await fetch('http://127.0.0.1:8000/records/', {
+                const resp = await fetch('http://195.133.147.101:228/records/', {
                     method: "PUT",
                     body: JSON.stringify({
                         record: {
@@ -75,7 +75,7 @@
                     }
                 })
                 if (resp.status === 403) {
-                    const resp = await fetch('http://127.0.0.1:8000/token/refresh', {
+                    const resp = await fetch('http://195.133.147.101:228/token/refresh', {
                         method: "POST",
                         body: JSON.stringify({
                             refresh: this.$store.getters.refresh
@@ -84,7 +84,7 @@
                             "Content-Type": 'application/json'
                         }
                     })
-                    if (resp.status === 403) {
+                    if (resp.status === 403 || resp.status === 401 || resp.status === 400) {
                         await this.$router.push('/login')
                     }
                     const a = await resp.json()
@@ -115,7 +115,7 @@
             if (this.todayRecord) {
                 this.weight = this.allRecords[this.allRecords.length - 1].value
             }
-            const resp = await fetch('http://127.0.0.1:8000/records/', {
+            const resp = await fetch('http://195.133.147.101:228/records/', {
                 method: "GET",
                 headers: {
                     "Content-Type": 'application/json',
@@ -124,7 +124,7 @@
             })
             console.log(resp)
             if (resp.status === 401) {
-                const resp = await fetch('http://127.0.0.1:8000/token/refresh/', {
+                const resp = await fetch('http://195.133.147.101:228/token/refresh/', {
                     method: "POST",
                     body: JSON.stringify({
                         refresh: this.$store.getters.refresh
@@ -134,7 +134,7 @@
                     }
                 })
                 console.log(resp)
-                if (resp.status === 403 || resp.status === 400) {
+                if (resp.status === 403 || resp.status === 401 || resp.status === 400) {
                     await this.$router.push('/login')
                 }
                 const a = await resp.json()

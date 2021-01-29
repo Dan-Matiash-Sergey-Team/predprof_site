@@ -65,7 +65,7 @@
         },
         methods: {
             submit: async function () {
-                const resp = await fetch('http://127.0.0.1:8000/register/', {
+                const resp = await fetch('http://195.133.147.101:228/register/', {
                     method: "POST",
                     body: JSON.stringify({
                         login: this.username,

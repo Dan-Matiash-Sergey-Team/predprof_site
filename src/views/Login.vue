@@ -56,7 +56,7 @@
         methods: {
             submit: async function () {
                 //195.133.147.101:228
-                const resp = await fetch('http://127.0.0.1:8000/token/',{
+                const resp = await fetch('http://195.133.147.101:228/token/',{
                     method: "POST",
                     body: JSON.stringify({
                         username: this.username,
