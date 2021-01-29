@@ -36,7 +36,10 @@
                     <BaseField>
                         <template #label>
                             <p class="help is-danger" v-if="error">{{error}}</p>
+                            <div class="buttons">
                             <BaseButton @click="submit" class="is-success">Создать аккаунт</BaseButton>
+                            <BaseButton @click="$router.push('/login')" class="is-success">Уже зарегестрированы? Войти</BaseButton>
+                            </div>
                         </template>
                     </BaseField>
                 </div>
