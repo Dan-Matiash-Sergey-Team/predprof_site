@@ -11,10 +11,10 @@ export default createStore({
     mutations: {
         newAccess(state, payload) {
             state.logged = true
-            state.accessToken = payload.access
+            state.accessToken = payload
         },
         newRefresh(state, payload) {
-            state.refreshToken = payload.refresh
+            state.refreshToken = payload
         },
         addRecord(state, payload){
             state.records.push(payload)

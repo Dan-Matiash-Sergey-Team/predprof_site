@@ -67,8 +67,9 @@
                     }
                 })
                 const a = await resp.json()
-                this.$store.commit('newAccess',{access: a.access, refresh: a.refresh})
-                this.$store.commit('newRefresh',{access: a.access, refresh: a.refresh})
+                this.$store.commit('newAccess',a.access)
+                this.$store.commit('newRefresh',a.refresh)
+                console.log('a')
                 await this.$router.push('/')
             }
         },

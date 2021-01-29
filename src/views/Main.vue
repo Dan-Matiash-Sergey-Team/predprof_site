@@ -9,9 +9,9 @@
         </div>
         <br>
         <GChart
-            type="LineChart"
-            :data="chartData"
-            :options="{title: 'Вес'}"/>
+                :data="chartData"
+                :options="{title: 'Вес'}"
+                type="LineChart"/>
     </div>
 </template>
 
@@ -25,7 +25,6 @@
         data() {
             return {
                 weight: 0,
-                allRecords: this.$store.getters.records
             }
         },
         methods: {
@@ -103,15 +102,50 @@
             },
             chartData: function () {
                 let a = [['Date', 'Weight']]
-                this.allRecords.forEach((el)=>{
-                    a.push([el.date, el.value])
+                this.allRecords.forEach((el) => {
+                    a.push([new Date(el.date), el.value])
                 })
                 return a
+            },
+            allRecords: function(){
+                return this.$store.getters.records
             }
         },
         async mounted() {
             if (this.todayRecord) {
                 this.weight = this.allRecords[this.allRecords.length - 1].value
+            }
+            const resp = await fetch('http://127.0.0.1:8000/records/', {
+                method: "GET",
+                headers: {
+                    "Content-Type": 'application/json',
+                    'Authorization': 'Bearer ' + this.$store.getters.access
+                }
+            })
+            console.log(resp)
+            if (resp.status === 401) {
+                const resp = await fetch('http://127.0.0.1:8000/token/refresh/', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        refresh: this.$store.getters.refresh
+                    }),
+                    headers: {
+                        "Content-Type": 'application/json'
+                    }
+                })
+                console.log(resp)
+                if (resp.status === 403 || resp.status === 400) {
+                    await this.$router.push('/login')
+                }
+                const a = await resp.json()
+                console.log(a)
+                this.$store.commit('newAccess', {access: a.access})
+                await this.$router.push('/')
+            } else if (resp.status === 200) {
+                const a = await resp.json()
+                console.log(a)
+                this.$store.commit('setRecords', a.records)
+                await this.$router.push('/main')
             }
         }
     }
