@@ -117,16 +117,14 @@
                 let a = [['Date', 'Weight']]
                 this.allRecords.forEach((el) => {
                     if (this.date.length > 0) {
-                        console.log(new Date(this.date[0]) < new Date(el.date))
+
                         if (new Date(this.date[0]) < new Date(el.date)  &&  new Date(el.date)< new Date(this.date[1])) {
-                            console.log(el.date)
                             a.push([new Date(el.date), el.value])
                         }
                     } else {
                         a.push([new Date(el.date), el.value])
                     }
                 })
-                console.log(a)
                 return a
             },
             allRecords: function () {
