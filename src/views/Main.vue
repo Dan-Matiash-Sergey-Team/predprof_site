@@ -12,6 +12,18 @@
                 :data="chartData"
                 :options="{title: 'Вес'}"
                 type="LineChart"/>
+        <div class="block">
+            <el-date-picker
+                    :picker-options="pickerOptions"
+                    align="right"
+                    end-placeholder="End date"
+                    range-separator="To"
+                    start-placeholder="Start date"
+                    type="datetimerange"
+                    v-model="date">
+            </el-date-picker>
+        </div>
+        {{date}}
     </div>
 </template>
 
@@ -25,6 +37,7 @@
         data() {
             return {
                 weight: 0,
+                date: [],
             }
         },
         methods: {
@@ -103,11 +116,20 @@
             chartData: function () {
                 let a = [['Date', 'Weight']]
                 this.allRecords.forEach((el) => {
-                    a.push([new Date(el.date), el.value])
+                    if (this.date.length > 0) {
+                        console.log(new Date(this.date[0]) < new Date(el.date))
+                        if (new Date(this.date[0]) < new Date(el.date)  &&  new Date(el.date)< new Date(this.date[1])) {
+                            console.log(el.date)
+                            a.push([new Date(el.date), el.value])
+                        }
+                    } else {
+                        a.push([new Date(el.date), el.value])
+                    }
                 })
+                console.log(a)
                 return a
             },
-            allRecords: function(){
+            allRecords: function () {
                 return this.$store.getters.records
             }
         },
