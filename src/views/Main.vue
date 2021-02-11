@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <BaseInput :value="weight" type="number" v-model="weight"/>
-        <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
-        <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
+    <div id="app" class="col-md">
+
         <br>
         <div :key="i" v-for="(record,i) in allRecords">
             <p>{{record.date}}: {{record.value}}</p>
@@ -12,7 +10,11 @@
                 :data="chartData"
                 :options="{title: 'Вес'}"
                 type="LineChart"/>
-        <div class="block">
+        <br>
+      <labelAlpha>
+        <label>Выберите временной период</label>
+      </labelAlpha>
+      <graphicsAlpha>
             <el-date-picker
                     :picker-options="pickerOptions"
                     align="right"
@@ -22,9 +24,16 @@
                     type="datetimerange"
                     v-model="date">
             </el-date-picker>
-        </div>
-        {{date}}
+      </graphicsAlpha>
+  <inputAlpha>
+    <BaseInput :value="weight" type="number" v-model="weight"/>
+  </inputAlpha>
+  <butAlpha>
+    <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
+    <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
+  </butAlpha>
     </div>
+
 </template>
 
 <script>
@@ -117,7 +126,6 @@
                 let a = [['Date', 'Weight']]
                 this.allRecords.forEach((el) => {
                     if (this.date.length > 0) {
-
                         if (new Date(this.date[0]) < new Date(el.date)  &&  new Date(el.date)< new Date(this.date[1])) {
                             a.push([new Date(el.date), el.value])
                         }

@@ -1,7 +1,11 @@
 <template>
     <input
             @input="$emit('update:modelValue', $event.target.value)"
-            class="input"
+            v-model="age"
+            min="25"
+            max="150"
+            placeholder="Введите вес"
+            class="form-control"
     />
 </template>
 
