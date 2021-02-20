@@ -2,13 +2,22 @@
     <div id="app" class="col-md">
 
         <br>
-        <div :key="i" v-for="(record,i) in allRecords">
-            <p>{{record.date}}: {{record.value}}</p>
-        </div>
-        <br>
+<!--        <div :key="i" v-for="(record,i) in allRecords">-->
+<!--            <p>{{new Date(record.date).toLocaleString("ru", {-->
+<!--                year: 'numeric',-->
+<!--                month: 'numeric',-->
+<!--                day: 'numeric',-->
+<!--                timezone: 'UTC',-->
+<!--                hour: 'numeric',-->
+<!--                minute: 'numeric',-->
+<!--                second: 'numeric'-->
+<!--                })}}: {{record.value}}</p>-->
+<!--        </div>-->
+<!--        <br>-->
         <GChart
                 :data="chartData"
-                :options="{title: 'Вес'}"
+                :options="{title: 'Вес', 'explorer.maxZoomIn': 0.5}"
+                :settings="{'packages':['corechart'],language: 'ru'}"
                 type="LineChart"/>
         <br>
       <labelAlpha>
@@ -123,7 +132,7 @@
                 return new Date(this.allRecords[this.allRecords.length - 1].date).getDate() === new Date().getDate()
             },
             chartData: function () {
-                let a = [['Date', 'Weight']]
+                let a = [['Дата', 'Вес']]
                 this.allRecords.forEach((el) => {
                     if (this.date.length > 0) {
                         if (new Date(this.date[0]) < new Date(el.date)  &&  new Date(el.date)< new Date(this.date[1])) {
