@@ -20,7 +20,7 @@ export default createStore({
             state.records.push(payload)
         },
         editRecord(state, payload){
-            let a = 0
+            let a = state.records.length-1
             for(let i=0;i<state.records.length;i++){
                 if(state.records[i].date === payload.date){
                     a = i;

@@ -72,7 +72,7 @@
                             this.changingDate = point.date
                         } else {
                             this.weight = 0
-                            this.changingDate = new Date()
+                            this.changingDate = this.allRecords[this.allRecords.length-1].date
                         }
                         console.log(this.changingDate)
                     }
@@ -160,7 +160,13 @@
                             count: (new Date(this.allRecords[this.allRecords.length - 1]).getTime() - new Date(this.allRecords[0]).getTime()) / (1000 * 3600 * 24 * 7)
                         }
                     },
+                    vAxis: {
+                        minValue: 0
+                    },
                     pointSize: 10,
+                    legend: {
+                        position: "bottom"
+                    }
 
                 }
             },
