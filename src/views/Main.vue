@@ -23,6 +23,9 @@
                     ref="gChart"
                     type="LineChart"
                     v-if="allRecords.length>0"/>
+            <div v-else>
+                Записей пока нет
+            </div>
         </div>
         <br>
         <labelAlpha>
@@ -38,7 +41,6 @@
                     type="datetimerange"
                     v-model="date">
             </el-date-picker>
-<<<<<<< HEAD
       </graphicsAlpha>
 
   <inputAlpha>
@@ -50,17 +52,6 @@
     <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
     </butAlpha>
   </div>
-=======
-        </graphicsAlpha>
-        <inputAlpha>
-            <BaseInput :value="weight" type="number" v-model="weight"/>
-        </inputAlpha>
-        <butAlpha>
-            <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
-            <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
-        </butAlpha>
-    </div>
->>>>>>> 3fcb3317f84d959ff8d1669713779930bc037a5a
 
 </template>
 
