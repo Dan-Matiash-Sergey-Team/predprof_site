@@ -78,7 +78,7 @@
                     }
                     const a = await resp.json()
                     this.$store.commit('newAccess', {access: a.access})
-                    this.saveWeight()
+                    await this.saveWeight()
                 } else if (resp.status === 200) {
                     this.$store.commit('addRecord', {value: this.weight, date: String(new Date())})
                 }
