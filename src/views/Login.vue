@@ -7,9 +7,9 @@
                         <template #label>Адрес электронной почты</template>
                         <template #input>
                             <BaseInput placeholder="example@gmail.com" type="email" v-model="username"></BaseInput>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
+<!--                            <span class="icon is-small is-left">-->
+<!--                                <i class="fas fa-envelope"></i>-->
+<!--                            </span>-->
                             <p class="help is-danger" v-if="!emailValid">This email is invalid</p>
                         </template>
                     </BaseField>
@@ -17,9 +17,9 @@
                         <template #label>Пароль</template>
                         <template #input>
                             <BaseInput placeholder="password" type="password" v-model="password"></BaseInput>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
+<!--                            <span class="icon is-small is-left">-->
+<!--                                <i class="fas fa-lock"></i>-->
+<!--                            </span>-->
                         </template>
                     </BaseField>
                     <BaseField>

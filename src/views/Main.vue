@@ -1,29 +1,30 @@
 <template>
-    <div id="app" class="col-md">
+    <div class="col-md" id="app">
 
         <br>
-<!--        <div :key="i" v-for="(record,i) in allRecords">-->
-<!--            <p>{{new Date(record.date).toLocaleString("ru", {-->
-<!--                year: 'numeric',-->
-<!--                month: 'numeric',-->
-<!--                day: 'numeric',-->
-<!--                timezone: 'UTC',-->
-<!--                hour: 'numeric',-->
-<!--                minute: 'numeric',-->
-<!--                second: 'numeric'-->
-<!--                })}}: {{record.value}}</p>-->
-<!--        </div>-->
-<!--        <br>-->
+        <!--        <div :key="i" v-for="(record,i) in allRecords">-->
+        <!--            <p>{{new Date(record.date).toLocaleString("ru", {-->
+        <!--                year: 'numeric',-->
+        <!--                month: 'numeric',-->
+        <!--                day: 'numeric',-->
+        <!--                timezone: 'UTC',-->
+        <!--                hour: 'numeric',-->
+        <!--                minute: 'numeric',-->
+        <!--                second: 'numeric'-->
+        <!--                })}}: {{record.value}}</p>-->
+        <!--        </div>-->
+        <!--        <br>-->
         <GChart
                 :data="chartData"
-                :options="{title: 'Вес', 'explorer.maxZoomIn': 0.5}"
+                :options="options"
                 :settings="{'packages':['corechart'],language: 'ru'}"
-                type="LineChart"/>
+                type="LineChart"
+                v-if="allRecords.length>0"/>
         <br>
-      <labelAlpha>
-        <label>Выберите временной период</label>
-      </labelAlpha>
-      <graphicsAlpha>
+        <labelAlpha>
+            <label>Выберите временной период</label>
+        </labelAlpha>
+        <graphicsAlpha>
             <el-date-picker
                     :picker-options="pickerOptions"
                     align="right"
@@ -33,14 +34,14 @@
                     type="datetimerange"
                     v-model="date">
             </el-date-picker>
-      </graphicsAlpha>
-  <inputAlpha>
-    <BaseInput :value="weight" type="number" v-model="weight"/>
-  </inputAlpha>
-  <butAlpha>
-    <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
-    <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
-  </butAlpha>
+        </graphicsAlpha>
+        <inputAlpha>
+            <BaseInput :value="weight" type="number" v-model="weight"/>
+        </inputAlpha>
+        <butAlpha>
+            <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
+            <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
+        </butAlpha>
     </div>
 
 </template>
@@ -127,21 +128,36 @@
             }
         },
         computed: {
+            options: function () {
+                return {
+                    title: 'Вес', 'explorer.maxZoomIn': 0.5,
+                    hAxis: {
+                        format: 'd/MM/yyyy',
+                        gridlines: {
+                            count: (new Date(this.allRecords[this.allRecords.length-1]).getTime() - new Date(this.allRecords[0]).getTime())/(1000 * 3600 * 24* 7)
+                        }
+                    },
+                    pointSize: 10,
+
+                }
+            },
             todayRecord: function () {
                 if (this.allRecords.length === 0) return false
                 return new Date(this.allRecords[this.allRecords.length - 1].date).getDate() === new Date().getDate()
             },
             chartData: function () {
                 let a = [['Дата', 'Вес']]
-                this.allRecords.forEach((el) => {
-                    if (this.date.length > 0) {
-                        if (new Date(this.date[0]) < new Date(el.date)  &&  new Date(el.date)< new Date(this.date[1])) {
-                            a.push([new Date(el.date), el.value])
+                if (this.allRecords.length > 0) {
+                    this.allRecords.forEach((el) => {
+                        if (this.date.length > 0) {
+                            if (new Date(this.date[0]) < new Date(el.date) && new Date(el.date) < new Date(this.date[1])) {
+                                a.push([new Date(el.date), parseInt(el.value)])
+                            }
+                        } else {
+                            a.push([new Date(el.date), parseInt(el.value)])
                         }
-                    } else {
-                        a.push([new Date(el.date), el.value])
-                    }
-                })
+                    })
+                }
                 return a
             },
             allRecords: function () {
