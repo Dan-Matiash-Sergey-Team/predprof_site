@@ -5,7 +5,7 @@
             min="25"
             max="150"
             placeholder="Введите вес"
-            class="form-control"
+            class="form-control input"
     />
 </template>
 
