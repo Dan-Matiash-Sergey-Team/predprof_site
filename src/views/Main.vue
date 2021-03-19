@@ -14,12 +14,16 @@
         <!--                })}}: {{record.value}}</p>-->
         <!--        </div>-->
         <!--        <br>-->
-        <GChart
-                :data="chartData"
-                :options="options"
-                :settings="{'packages':['corechart'],language: 'ru'}"
-                type="LineChart"
-                v-if="allRecords.length>0"/>
+        <div id="chart_wrapper">
+            <GChart
+                    :data="chartData"
+                    :events="chartEvents"
+                    :options="options"
+                    :settings="{'packages':['corechart'],language: 'ru'}"
+                    ref="gChart"
+                    type="LineChart"
+                    v-if="allRecords.length>0"/>
+        </div>
         <br>
         <labelAlpha>
             <label>Выберите временной период</label>
@@ -57,6 +61,22 @@
             return {
                 weight: 0,
                 date: [],
+                changingDate: new Date(),
+                chartEvents: {
+                    'select': () => {
+                        const table = this.$refs.gChart.chartObject;
+                        const selection = table.getSelection();
+                        if (selection.length > 0) {
+                            const point = this.allRecords[selection[0].row]
+                            this.weight = point.value
+                            this.changingDate = point.date
+                        } else {
+                            this.weight = 0
+                            this.changingDate = new Date()
+                        }
+                        console.log(this.changingDate)
+                    }
+                }
             }
         },
         methods: {
@@ -94,10 +114,12 @@
                 }
             },
             editWeight: async function () {
+                console.log(this.changingDate)
                 const resp = await fetch('http://195.133.147.101:228/records/', {
                     method: "PUT",
                     body: JSON.stringify({
                         record: {
+                            date: String(this.changingDate).split("T")[0],
                             value: this.weight
                         }
                     }),
@@ -123,18 +145,19 @@
                     this.$store.commit('newAccess', {access: a.access})
                     this.saveWeight()
                 } else if (resp.status === 200) {
-                    this.$store.commit('editRecord', {value: this.weight, date: String(new Date())})
+                    this.$store.commit('editRecord', {value: this.weight, date: String(this.changingDate)})
                 }
             }
         },
         computed: {
             options: function () {
                 return {
-                    title: 'Вес', 'explorer.maxZoomIn': 0.5,
+                    title: 'Вес',
+                    'explorer.maxZoomIn': 0.5,
                     hAxis: {
                         format: 'd/MM/yyyy',
                         gridlines: {
-                            count: (new Date(this.allRecords[this.allRecords.length-1]).getTime() - new Date(this.allRecords[0]).getTime())/(1000 * 3600 * 24* 7)
+                            count: (new Date(this.allRecords[this.allRecords.length - 1]).getTime() - new Date(this.allRecords[0]).getTime()) / (1000 * 3600 * 24 * 7)
                         }
                     },
                     pointSize: 10,
@@ -205,5 +228,14 @@
 </script>
 
 <style scoped>
-
+    @media only screen
+    and (device-width: 390px)
+    and (device-height: 844px)
+    and (-webkit-device-pixel-ratio: 3) {
+        #chart_wrapper {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            width: 400px;
+        }
+    }
 </style>
