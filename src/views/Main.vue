@@ -34,14 +34,16 @@
                     v-model="date">
             </el-date-picker>
       </graphicsAlpha>
+
   <inputAlpha>
     <BaseInput :value="weight" type="number" v-model="weight"/>
   </inputAlpha>
-  <butAlpha>
+
+    <butAlpha>
     <BaseButton @click="saveWeight" v-if="!todayRecord">Сохранить</BaseButton>
     <BaseButton @click="editWeight" v-else>Изменить</BaseButton>
-  </butAlpha>
-    </div>
+    </butAlpha>
+  </div>
 
 </template>
 
