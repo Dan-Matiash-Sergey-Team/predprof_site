@@ -53,12 +53,11 @@
                         this.$store.commit('setRecords', a.records)
                         await this.$router.push('/main')
                     }
-
                 }
             }
         },
         async mounted() {
-            this.init()
+            await this.init()
         }
     }
 </script>
