@@ -4,7 +4,7 @@
         <br>
         <!--        <div :key="i" v-for="(record,i) in allRecords">-->
         <!--            <p>{{new Date(record.date).toLocaleString("ru", {-->
-        <!--                year: 'numeric',-->
+        <!--                year:  'numeric',-->
         <!--                month: 'numeric',-->
         <!--                day: 'numeric',-->
         <!--                timezone: 'UTC',-->
